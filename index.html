@@ -138,12 +138,36 @@
 .book-page {
     width: 50%;
     height: 100%;
-    object-fit: contain;
-    background-color: #000000;
     border: none;
+    background-color: #000000;
+    overflow: hidden;
 }
 
-    }      
+/* Force modern browser PDF plugins to scale content to the element size */
+@media screen and (min-width: 1px) {
+    .book-page {
+        height: 100%;
+    }
+}
+
+}
+
+/* Force modern browser PDF plugins to scale content to the element size */
+@media screen and (min-width: 1px) {
+    .book-page {
+        height: 100%;
+    }
+}
+
+}
+
+/* Force modern browser PDF plugins to scale content to the element size */
+@media screen and (min-width: 1px) {
+    .book-page {
+        height: 100%;
+    }
+}
+     
     
     </style>
 </head>
