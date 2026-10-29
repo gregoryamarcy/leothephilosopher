@@ -192,29 +192,13 @@
             <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
             <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
         </div>
-
-        <!-- Interactive PDF Embed Viewport (Appears for Synopsis Track) -->
         <!-- Isolated Canvas Sandbox Backdrop Mask -->
-<div id="canvas-backdrop-sandbox"></div>
+        <div id="canvas-backdrop-sandbox"></div>
 
-<!-- Your Downsized Reading Canvas Layout Container -->
-<div id="pdfViewer" class="pdf-viewer-layer">
-    <div id="book-spread-track">
-        <!-- Spread 1: Pages 1 & 2 Facing -->
-        <div class="book-spread">
-            <iframe src="synopsis.pdf#page=1&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
-            <iframe src="synopsis.pdf#page=2&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
+        <!-- Your Downsized Reading Canvas Layout Container with a Single Clean Frame -->
+        <div id="pdfViewer" class="pdf-viewer-layer">
+            <iframe src="synopsis.pdf#toolbar=0&navpanes=0&view=FitH" id="book-single-viewport" style="width: 100%; height: 100%; border: none;" scrolling="auto"></iframe>
         </div>
-        
-        <!-- Spread 2: Pages 3 & 4 Facing -->
-        <div class="book-spread">
-            <iframe src="synopsis.pdf#page=3&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
-            <iframe src="synopsis.pdf#page=4&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
-        </div>
-    </div>
-</div>
-
-    </div>
 
     <script>
         const bookTracks = {
