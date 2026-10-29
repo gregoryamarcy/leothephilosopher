@@ -1,55 +1,184 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>LEO THE PHILOSOPHER</title><style>
-  :root { --t: 0.4s ease; }
-  body, html { margin:0; padding:0; width:100%; height:100%; background:#000; font-family:sans-serif; color:#fff; overflow:hidden; }
-  .site { display:flex; flex-direction:column; width:100vw; height:100vh; }
-  .nav { display:flex; align-items:center; height:70px; border-bottom:1px solid #333; padding:0 30px; transition:var(--t); }
-  .osdg { border:1px solid #fff; padding:6px 20px; font-weight:bold; letter-spacing:2px; margin-right:20px; }
-  .dot { width:12px; height:12px; background:#ff3b30; margin-right:40px; }
-  .links { display:flex; gap:30px; font-size:12px; letter-spacing:2px; }
-  .links a { color:#888; text-decoration:none; } .links a.active { color:#fff; }
-  .work { display:flex; flex:1; height:calc(100vh - 120px); }
-  .side { width:260px; padding:30px; display:flex; flex-direction:column; transition:var(--t); }
-  .side h1 { font-size:36px; margin:0; } .side div { width:30px; height:30px; background:#ff3b30; margin:10px 0; }
-  .side p { font-size:12px; color:#888; margin:0 0 30px 0; }
-  .view { flex:1; display:flex; align-items:center; justify-content:center; }
-  .frame { position:relative; width:80%; max-width:1000px; aspect-ratio:4/3; background:#111; border:1px solid #333; transform:translateX(0.75in); transition:var(--t); overflow:hidden; cursor:pointer; }
-  .engine { display:flex; width:100%; height:100%; overflow:hidden; }
-  .spread { flex:0 0 100%; width:100%; height:100%; display:flex; background:#000; }
-  .page { flex:0 0 50%; width:50%; height:100%; background:#fff; border-right:1px solid #ddd; }
-  iframe { width:100%; height:100%; border:none; pointer-events:none; }
-  .arrows { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:between; padding:0 15px; pointer-events:none; }
-  .btn { width:40px; height:40px; border-radius:50%; border:1px solid #555; background:#000; color:#fff; font-size:20px; cursor:pointer; pointer-events:auto; }
-  .btn:disabled { opacity:0.2; cursor:not-allowed; }
-  .foot { display:flex; justify-content:space-between; height:50px; border-top:1px solid #222; padding:0 30px; align-items:center; font-size:10px; color:#555; transition:var(--t); }
-  .focus .nav { opacity:0; transform:translateY(-70px); pointer-events:none; }
-  .focus .side { opacity:0; transform:translateX(-100px); pointer-events:none; }
-  .focus .foot { opacity:0; transform:translateY(50px); pointer-events:none; }
-  .focus .frame { width:100vw; max-width:100%; height:100vh; border:none; transform:translateX(0.75in); }
-  .focus .arrows { opacity:0; pointer-events:none; }
-</style></head>
-<body id="w"><div class="site">
-  <div class="nav"><div class="osdg">OSDG</div><div class="dot"></div><div class="links"><a href="#" class="active">PROJECTS</a><a href="#">ABOUT</a><a href="#">TEAM</a></div></div>
-  <div class="work">
-    <div class="side"><h2>PROJECTS</h2><h1>LEO</h1><div></div><p>THE PHILOSOPHER<br><i>This Great Feast of Life</i></p><b>WOBBLY BOOK®</b><br><a href="#" style="color:#fff;text-decoration:underline;">SERIES SYNOPSIS</a></div>
-    <div class="view"><div class="frame" id="f">
-      <div class="engine" id="e">
-        <div class="spread"><div class="page"><iframe src="synopsis.pdf#page=1&toolbar=0&navpanes=0&view=Fit"></iframe></div><div class="page"><iframe src="synopsis.pdf#page=2&toolbar=0&navpanes=0&view=Fit"></iframe></div></div>
-        <div class="spread"><div class="page"><iframe src="synopsis.pdf#page=3&toolbar=0&navpanes=0&view=Fit"></iframe></div><div class="page"><iframe src="synopsis.pdf#page=4&toolbar=0&navpanes=0&view=Fit"></iframe></div></div>
-      </div>
-      <div class="arrows" style="justify-content:space-between;"><button class="btn" id="l" disabled>‹</button><button class="btn" id="r">›</button></div>
-    </div></div>
-  </div>
-  <div class="foot"><div>© OSDG 2026</div><div>Site by OSDG</div></div>
-</div>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const w=document.getElementById('w'), f=document.getElementById('f'), e=document.getElementById('e'), l=document.getElementById('l'), r=document.getElementById('r');
-    let idx = 0;
-    function move() { e.scrollTo({ left: idx * e.clientWidth, behavior: 'smooth' }); l.disabled = idx === 0; r.disabled = idx === 1; }
-    r.addEventListener('click', (ev) => { ev.stopPropagation(); if(idx<1) { idx++; move(); } });
-    l.addEventListener('click', (ev) => { ev.stopPropagation(); if(idx>0) { idx--; move(); } });
-    window.addEventListener('resize', () => e.scrollTo({ left: idx * e.clientWidth, behavior: 'auto' }));
-    f.addEventListener('dblclick', () => { w.classList.toggle('focus'); setTimeout(move, 450); });
-    document.addEventListener('keydown', (ev) => { if(ev.key==='Escape' && w.classList.contains('focus')) { w.classList.remove('focus'); setTimeout(move, 450); } });
-  });
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .site-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1920px;
+            max-height: 1080px;
+            margin: 0 auto;
+            background-image: url('index.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.2s ease-in-out;
+        }
+        
+        /* Top Navigation Header Overlay */
+        .nav-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8%;
+            display: flex;
+            z-index: 10;
+        }
+        .nav-logo {
+            width: 16%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .nav-spacer {
+            width: 13%;
+            height: 100%;
+        }
+        .nav-links {
+            width: 71%;
+            height: 100%;
+            display: flex;
+        }
+        .nav-item {
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0);
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Dynamic Left Sidebar Overlay for PROJECTS Tab */
+        .sub-nav-overlay {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            width: 16%;
+            height: 20%;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sub-nav-item {
+            width: 100%;
+            height: 50%;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0);
+        }
+        .sub-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Razor-Sharp PDF Embed Viewport Container */
+        .pdf-viewer-layer {
+            position: absolute;
+            top: 8%;          /* Starts cleanly beneath your header navigation */
+            right: 0;
+            width: 84%;       /* Fits the central and right reading canvas perfectly */
+            height: 92%;      /* Fills down to the bottom baseline */
+            display: none;    /* Hidden until selected */
+            border: none;
+            z-index: 5;
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="site-container" id="slideViewer">
+        <!-- Main Top Navigation -->
+        <nav class="nav-overlay">
+            <div class="nav-logo" onclick="jumpToTrack('index')"></div>
+            <div class="nav-spacer"></div>
+            <div class="nav-links">
+                <div class="nav-item" onclick="jumpToTrack('projects')"></div>
+                <div class="nav-item" onclick="jumpToTrack('about')"></div>
+                <div class="nav-item" onclick="jumpToTrack('greg')"></div>
+                <div class="nav-item" onclick="jumpToTrack('careers')"></div>
+                <div class="nav-item" onclick="jumpToTrack('contact')"></div>
+            </div>
+        </nav>
+
+        <!-- Dynamic Projects Left Panel Sub-Navigation -->
+        <div class="sub-nav-overlay" id="projectsSubNav">
+            <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
+            <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
+        </div>
+
+        <!-- Interactive PDF Embed Viewport (Appears for Synopsis Track) -->
+        <iframe class="pdf-viewer-layer" id="pdfViewer" src="about:blank"></iframe>
+    </div>
+
+    <script>
+        const bookTracks = {
+            'index': { type: 'image', source: 'index.png' },
+            'projects': { type: 'image', source: 'projects.png' },
+            'about': { type: 'image', source: 'about.png' },
+            'greg': { type: 'image', source: 'greg.png' },
+            'careers': { type: 'image', source: 'careers.png' },
+            'contact': { type: 'image', source: 'contact.png' },
+            'wobblybook': { type: 'image', source: 'wobblybook.png' },
+            
+            // Explicitly handles your landscape stitched PDF document track
+            'synopsis': { 
+                type: 'document', 
+                source: 'synopsis.pdf#toolbar=0&navpanes=0&view=FitH' 
+            }
+        };
+
+        let currentTrack = 'index';
+
+        function jumpToTrack(trackName) {
+            if (!bookTracks[trackName]) return;
+            currentTrack = trackName;
+            renderCurrentState();
+        }
+
+        function renderCurrentState() {
+            const activeTrack = bookTracks[currentTrack];
+            const slideViewer = document.getElementById('slideViewer');
+            const pdfWindow = document.getElementById('pdfViewer');
+            const projectsMenu = document.getElementById('projectsSubNav');
+            
+            // 1. Handle Left Sub-Menu Visibility
+            if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
+                projectsMenu.style.display = 'flex';
+            } else {
+                projectsMenu.style.display = 'none';
+            }
+            
+            // 2. Route Content Types
+            if (activeTrack.type === 'document') {
+                // Pin background to projects layout frame so the menus stay visible
+                slideViewer.style.backgroundImage = "url('projects.png')"; 
+                
+                // Active the PDF canvas viewport smoothly
+                pdfWindow.src = activeTrack.source;
+                pdfWindow.style.display = 'block';
+            } else {
+                // Clear the document container and swap background image
+                pdfWindow.style.display = 'none';
+                pdfWindow.src = 'about:blank';
+                slideViewer.style.backgroundImage = "url('" + activeTrack.source + "')";
+            }
+        }
+    </script>
+</body>
+</html>
