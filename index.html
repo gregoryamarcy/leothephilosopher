@@ -14,28 +14,33 @@
       background-image: url('projects.png');
       background-size: 100% 100%; background-repeat: no-repeat; z-index: 1;
     }
-    .nav-links {
-      position: absolute; top: 22px; left: 345px; display: flex; gap: 50px; z-index: 10;
+    /* Invisible, perfectly placed button hot-spots over your image text links */
+    .hotspot-nav {
+      position: absolute; top: 0; left: 0; width: 100%; height: 70px; z-index: 10; display: flex;
     }
-    .nav-links a {
-      color: rgba(255, 255, 255, 0.6); text-decoration: none;
-      font-family: -apple-system, sans-serif; font-size: 12px; letter-spacing: 0.25em;
-    }
-    .nav-links a.active { color: #ffffff; }
-    #synopsis-btn {
-      position: absolute; top: 320px; left: 40px; width: 200px; height: 30px; z-index: 10; cursor: pointer;
+    .space-left-gate { width: 440px; height: 100%; }
+    .click-target-link { height: 100%; cursor: pointer; display: block; }
+    .link-about { width: 130px; }
+    .link-team { width: 110px; }
+    .link-careers { width: 140px; }
+    .link-contact { width: 140px; }
+    
+    #synopsis-hotspot {
+      position: absolute; top: 380px; left: 15px; width: 150px; height: 35px; z-index: 10; cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div id="bg-layer"></div>
-  <nav class="nav-links">
-    <a href="index.html" class="active">PROJECTS</a>
-    <a href="about.html">ABOUT</a>
-    <a href="team.html">TEAM</a>
-    <a href="careers.html">CAREERS</a>
-    <a href="contact.html">CONTACT</a>
-  </nav>
-  <a href="synopsis.html"><div id="synopsis-btn"></div></a>
+  
+  <div class="hotspot-nav">
+    <div class="space-left-gate"></div>
+    <a href="about.html" class="click-target-link link-about"></a>
+    <a href="team.html" class="click-target-link link-team"></a>
+    <a href="careers.html" class="click-target-link link-careers"></a>
+    <a href="contact.html" class="click-target-link link-contact"></a>
+  </div>
+
+  <a href="synopsis.html"><div id="synopsis-hotspot"></div></a>
 </body>
 </html>
