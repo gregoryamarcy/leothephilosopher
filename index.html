@@ -223,7 +223,8 @@ const totalSpreads = 2;
             const activeTrack = bookTracks[currentTrack];
             const slideViewer = document.getElementById('slideViewer');
             const pdfWindow = document.getElementById('pdfViewer');
-            const projectsMenu = document.getElementById('projectsSubNav');
+    const sandboxMask = document.getElementById('canvas-backdrop-sandbox');
+    const projectsMenu = document.getElementById('projectsSubNav');
             
             // 1. Handle Left Sub-Menu Visibility
             if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
