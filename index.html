@@ -1,209 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
-  <style>
-    /* ==========================================================================
-       GLOBAL SITE FRAMEWORK & RESPONSIVE TRACKING LAYOUT
-       ========================================================================== */
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #000000;
-      color: #ffffff;
-      font-family: sans-serif;
-      overflow: hidden; /* Prevent native window scroll up/down */
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .site-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1920px;
+            max-height: 1080px;
+            margin: 0 auto;
+            background-image: url('index.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.2s ease-in-out;
+        }
+        
+        /* Top Navigation Header Overlay */
+        .nav-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8%;
+            display: flex;
+            z-index: 10;
+        }
+        .nav-logo {
+            width: 16%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .nav-spacer {
+            width: 13%;
+            height: 100%;
+        }
+        .nav-links {
+            width: 71%;
+            height: 100%;
+            display: flex;
+        }
+        .nav-item {
+            flex: 1;
+            height: 100%;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0);
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Dynamic Left Sidebar Overlay for PROJECTS Tab */
+        .sub-nav-overlay {
+            position: absolute;
+            top: 40%;
+            left: 0;
+            width: 16%;
+            height: 20%;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+        }
+        .sub-nav-item {
+            width: 100%;
+            height: 50%;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0);
+        }
+        .sub-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-    .site-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image 0.5s ease-in-out;
-    }
-
-    /* ==========================================================================
-       NAVIGATION & TRANSLUCENT OVERLAYS
-       ========================================================================== */
-    .nav-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      box-sizing: border-box;
-      z-index: 100;
-    }
-
-    .nav-logo {
-      width: 150px;
-      height: 40px;
-      cursor: pointer;
-    }
-
-    .nav-spacer {
-      flex-grow: 1;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-item {
-      height: 30px;
-      min-width: 60px;
-      cursor: pointer;
-    }
-
-    .nav-sub-overlay {
-      position: absolute;
-      top: 60px;
-      left: 20px;
-      display: none; /* Controlled dynamically by JavaScript */
-      flex-direction: column;
-      gap: 10px;
-      z-index: 90;
-    }
-
-    .sub-nav-item {
-      height: 25px;
-      width: 120px;
-      cursor: pointer;
-    }
-
-    /* ==========================================================================
-       SERIES SYNOPSIS COMPONENT CONTAINER LAYOUT
-       ========================================================================== */
-    .pdf-viewer-layer {
-      display: none; /* Controlled dynamically by JavaScript */
-      box-sizing: border-box;
-      position: absolute;
-      top: 7.5vh;
-      
-      /* Explicit wide dimensions to fit 16-page horizontal stitched layouts */
-      width: 75vw;
-      height: 85vh; 
-      max-height: 85vh; 
-      border: none;
-      
-      /* Exact Visual Balance Shifting 3/4" to the Right */
-      transform: translateX(0.75in); 
-      
-      /* Smooth Transition State for Immersive Full-Screen Toggle */
-      transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease, max-height 0.3s ease;
-      z-index: 10;
-    }
-
-    /* ==========================================================================
-       IMMERSIVE FULL-SCREEN / FOCUS MODE OVERRIDE
-       ========================================================================== */
-    .pdf-viewer-layer:fullscreen,
-    .pdf-viewer-layer.focus-mode-active {
-      width: 100vw !important;
-      height: 100vh !important;
-      max-height: 100vh !important;
-      top: 0 !important;
-      left: 0 !important;
-      transform: translateX(0) !important;
-      background-color: #000000 !important;
-      z-index: 999999 !important;
-    }
-  </style>
+        /* Seamless Book Spread Page-Flip Overlay Controls */
+        .book-control-layer {
+            position: absolute;
+            top: 8%; /* Sits cleanly below top nav header */
+            left: 0;
+            width: 100%;
+            height: 92%;
+            display: none; /* Only activates during multi-page book views */
+            z-index: 5;
+        }
+        .book-zone {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 24px;
+            user-select: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        /* Left 15% of screen: Turn back a spread */
+        .book-zone-prev {
+            left: 0;
+            width: 15%;
+            background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0));
+        }
+        .book-zone-prev:hover {
+            background: linear-gradient(to right, rgba(255,255,255,0.03), rgba(0,0,0,0));
+            color: rgba(255, 255, 255, 0.6);
+        }
+        /* Right 15% of screen: Turn forward a spread */
+        .book-zone-next {
+            right: 0;
+            width: 15%;
+            background: linear-gradient(to left, rgba(0,0,0,0.2), rgba(0,0,0,0));
+        }
+        .book-zone-next:hover {
+            background: linear-gradient(to left, rgba(255,255,255,0.03), rgba(0,0,0,0));
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
 </head>
 <body>
 
-  <div class="site-container" id="slideViewer">
-    <!-- Main Top Navigation -->
-    <nav class="nav-overlay">
-      <div class="nav-logo" onclick="jumpToTrack('index')"></div>
-      <div class="nav-spacer"></div>
-      <div class="nav-links">
-        <div class="nav-item" onclick="jumpToTrack('projects')"></div>
-        <div class="nav-item" onclick="jumpToTrack('about')"></div>
-        <div class="nav-item" onclick="jumpToTrack('greg')"></div>
-        <div class="nav-item" onclick="jumpToTrack('careers')"></div>
-        <div class="nav-item" onclick="jumpToTrack('contact')"></div>
-      </div>
-    </nav>
+    <div class="site-container" id="slideViewer">
+        <!-- Main Top Navigation -->
+        <nav class="nav-overlay">
+            <div class="nav-logo" onclick="jumpToTrack('index')"></div>
+            <div class="nav-spacer"></div>
+            <div class="nav-links">
+                <div class="nav-item" onclick="jumpToTrack('projects')"></div>
+                <div class="nav-item" onclick="jumpToTrack('about')"></div>
+                <div class="nav-item" onclick="jumpToTrack('greg')"></div>
+                <div class="nav-item" onclick="jumpToTrack('careers')"></div>
+                <div class="nav-item" onclick="jumpToTrack('contact')"></div>
+            </div>
+        </nav>
 
-    <!-- Dynamic Projects Left Panel Sub-Navigation -->
-    <div class="nav-sub-overlay" id="projectsSubNav">
-      <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
-      <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
+        <!-- Dynamic Projects Left Panel Sub-Navigation -->
+        <div class="sub-nav-overlay" id="projectsSubNav">
+            <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
+            <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
+        </div>
+
+        <!-- Book Reading Flip Interface Hitboxes -->
+        <div class="book-control-layer" id="bookControls">
+            <div class="book-zone book-zone-prev" onclick="changePage(-1)">‹</div>
+            <div class="book-zone book-zone-next" onclick="changePage(1)">›</div>
+        </div>
     </div>
 
-    <!-- Interactive PDF Embed Viewport (Appears for Synopsis Track) -->
-    <iframe class="pdf-viewer-layer" id="pdfViewer" src="about:blank"></iframe>
-  </div>
+    <script>
+        // Definition of Multi-Page Reading Tracks for APPI Review
+        // As you upload more consecutive spreads, add their filenames directly to these arrays
+        const bookTracks = {
+            'index': ['index.png'],
+            'projects': ['projects.png'],
+            'about': ['about.png'],
+            'greg': ['greg.png'],
+            'careers': ['careers.png'],
+            'contact': ['contact.png'],
+            
+            // Multi-Page Book Spread Tracks
+            'wobblybook': [
+                'wobblybook.png' // This is page 1 (e.g., your intro spread snippet). Add more strings here as you build them.
+            ],
+            'synopsis': [
+                'synopsis.png' // This is page 1 (e.g., your Albania Notebooks spread snippet)
+            ]
+        };
 
-  <script>
-    const bookTracks = {
-      'index': { type: 'image', source: 'index.png' },
-      'projects': { type: 'image', source: 'projects.png' },
-      'about': { type: 'image', source: 'about.png' },
-      'greg': { type: 'image', source: 'greg.png' },
-      'careers': { type: 'image', source: 'careers.png' },
-      'contact': { type: 'image', source: 'contact.png' },
-      'wobblybook': { type: 'image', source: 'wobblybook.png' },
-      
-      // Explicitly handles your landscape stitched PDF document track with clear Fit dimensions
-      'synopsis': {
-        type: 'document',
-        source: 'synopsis.pdf#toolbar=0&navpanes=0&view=Fit'
-      }
-    };
+        let currentTrack = 'index';
+        let currentPageIndex = 0;
 
-    let currentTrack = 'index';
+        // Handles jumping to a specific content track or book section
+        function jumpToTrack(trackName) {
+            if (!bookTracks[trackName]) return;
+            
+            currentTrack = trackName;
+            currentPageIndex = 0; // Reset reader to the first spread of the section
+            renderCurrentState();
+        }
 
-    function jumpToTrack(trackName) {
-      if (!bookTracks[trackName]) return;
-      currentTrack = trackName;
-      renderCurrentState();
-    }
+        // Moves backward or forward within the active reading track
+        function changePage(direction) {
+            const trackPages = bookTracks[currentTrack];
+            let newIndex = currentPageIndex + direction;
+            
+            // Check boundaries to see if a next or previous page exists
+            if (newIndex >= 0 && newIndex < trackPages.length) {
+                currentPageIndex = newIndex;
+                renderCurrentState();
+            }
+        }
 
-    function renderCurrentState() {
-      const activeTrack = bookTracks[currentTrack];
-      const slideViewer = document.getElementById('slideViewer');
-      const pdfWindow = document.getElementById('pdfViewer');
-      const projectsMenu = document.getElementById('projectsSubNav');
-
-      // 1. Handle Left Sub-Menu Visibility
-      if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
-        projectsMenu.style.display = 'flex';
-      } else {
-        projectsMenu.style.display = 'none';
-      }
-
-      // 2. Route Content Types
-      if (activeTrack.type === 'document') {
-        // Pin background to projects layout frame so the menus stay visible
-        slideViewer.style.backgroundImage = "url('projects.png')";
-        
-        // Activate the PDF canvas viewport smoothly
-        pdfWindow.src = activeTrack.source;
-        pdfWindow.style.display = 'block';
-      } else {
-        // Clear the document container and swap background image
-        pdfWindow.style.display = 'none';
-        pdfWindow.src = 'about:blank';
-        slideViewer.style.backgroundImage = "url('" + activeTrack.source + "')";
-      }
-    }
-
-    // Initialize the landing page view state on launch
-    renderCurrentState();
-  </script>
+        // Synchronizes the CSS backgrounds and interface overlays based on active state
+        function renderCurrentState() {
+            const trackPages = bookTracks[currentTrack];
+            const activeImage = trackPages[currentPageIndex];
+            
+            // 1. Update the background image spread
+            document.getElementById('slideViewer').style.backgroundImage = "url('" + activeImage + "')";
+            
+            // 2. Control Left Sidebar Sub-Nav visibility (keep active on projects, wobblybook, and synopsis views)
+            const projectsMenu = document.getElementById('projectsSubNav');
+            if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
+                projectsMenu.style.display = 'flex';
+            } else {
+                projectsMenu.style.display = 'none';
+            }
+            
+            // 3. Toggle interactive book page-turn hitboxes if the active track contains multiple pages
+            const bookLayer = document.getElementById('bookControls');
+            if (trackPages.length > 1) {
+                bookLayer.style.display = 'block';
+            } else {
+                bookLayer.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
