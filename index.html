@@ -30,6 +30,8 @@
             background-repeat: no-repeat;
             transition: background-image 0.2s ease-in-out;
         }
+        
+        /* Top Navigation Header Overlay */
         .nav-overlay {
             position: absolute;
             top: 0;
@@ -37,6 +39,7 @@
             width: 100%;
             height: 8%;
             display: flex;
+            z-index: 10;
         }
         .nav-logo {
             width: 16%;
@@ -62,24 +65,69 @@
             background: rgba(255, 255, 255, 0.05);
         }
         
-        /* New Sub-Navigation Overlay Panel for PROJECTS Left Sidebar */
+        /* Dynamic Left Sidebar Overlay for PROJECTS Tab */
         .sub-nav-overlay {
             position: absolute;
-            top: 40%;         /* Positions vertically near the text block */
+            top: 40%;
             left: 0;
-            width: 16%;       /* Matches the width of the left panel column */
-            height: 20%;      /* Covers the vertical span of both text links */
-            display: none;    /* Hidden by default until PROJECTS is active */
+            width: 16%;
+            height: 20%;
+            display: none;
             flex-direction: column;
+            z-index: 10;
         }
         .sub-nav-item {
             width: 100%;
-            height: 50%;      /* Splits the space evenly between the two links */
+            height: 50%;
             cursor: pointer;
             background: rgba(255, 255, 255, 0);
         }
         .sub-nav-item:hover {
-            background: rgba(255, 255, 255, 0.05); /* Soft visual feedback on hover */
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Seamless Book Spread Page-Flip Overlay Controls */
+        .book-control-layer {
+            position: absolute;
+            top: 8%; /* Sits cleanly below top nav header */
+            left: 0;
+            width: 100%;
+            height: 92%;
+            display: none; /* Only activates during multi-page book views */
+            z-index: 5;
+        }
+        .book-zone {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 24px;
+            user-select: none;
+            transition: background 0.2s, color 0.2s;
+        }
+        /* Left 15% of screen: Turn back a spread */
+        .book-zone-prev {
+            left: 0;
+            width: 15%;
+            background: linear-gradient(to right, rgba(0,0,0,0.2), rgba(0,0,0,0));
+        }
+        .book-zone-prev:hover {
+            background: linear-gradient(to right, rgba(255,255,255,0.03), rgba(0,0,0,0));
+            color: rgba(255, 255, 255, 0.6);
+        }
+        /* Right 15% of screen: Turn forward a spread */
+        .book-zone-next {
+            right: 0;
+            width: 15%;
+            background: linear-gradient(to left, rgba(0,0,0,0.2), rgba(0,0,0,0));
+        }
+        .book-zone-next:hover {
+            background: linear-gradient(to left, rgba(255,255,255,0.03), rgba(0,0,0,0));
+            color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
@@ -88,37 +136,96 @@
     <div class="site-container" id="slideViewer">
         <!-- Main Top Navigation -->
         <nav class="nav-overlay">
-            <div class="nav-logo" onclick="changeSlide('index.png')"></div>
+            <div class="nav-logo" onclick="jumpToTrack('index')"></div>
             <div class="nav-spacer"></div>
             <div class="nav-links">
-                <div class="nav-item" onclick="changeSlide('projects.png')"></div>
-                <div class="nav-item" onclick="changeSlide('about.png')"></div>
-                <div class="nav-item" onclick="changeSlide('greg.png')"></div>
-                <div class="nav-item" onclick="changeSlide('careers.png')"></div>
-                <div class="nav-item" onclick="changeSlide('contact.png')"></div>
+                <div class="nav-item" onclick="jumpToTrack('projects')"></div>
+                <div class="nav-item" onclick="jumpToTrack('about')"></div>
+                <div class="nav-item" onclick="jumpToTrack('greg')"></div>
+                <div class="nav-item" onclick="jumpToTrack('careers')"></div>
+                <div class="nav-item" onclick="jumpToTrack('contact')"></div>
             </div>
         </nav>
 
         <!-- Dynamic Projects Left Panel Sub-Navigation -->
         <div class="sub-nav-overlay" id="projectsSubNav">
-            <div class="sub-nav-item" onclick="changeSlide('wobblybook.png')"></div>
-            <div class="sub-nav-item" onclick="changeSlide('synopsis.png')"></div>
+            <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
+            <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
+        </div>
+
+        <!-- Book Reading Flip Interface Hitboxes -->
+        <div class="book-control-layer" id="bookControls">
+            <div class="book-zone book-zone-prev" onclick="changePage(-1)">‹</div>
+            <div class="book-zone book-zone-next" onclick="changePage(1)">›</div>
         </div>
     </div>
 
     <script>
-        function changeSlide(imageName) {
-            // Swap the main presentation slide
-            document.getElementById('slideViewer').style.backgroundImage = "url('" + imageName + "')";
+        // Definition of Multi-Page Reading Tracks for APPI Review
+        // As you upload more consecutive spreads, add their filenames directly to these arrays
+        const bookTracks = {
+            'index': ['index.png'],
+            'projects': ['projects.png'],
+            'about': ['about.png'],
+            'greg': ['greg.png'],
+            'careers': ['careers.png'],
+            'contact': ['contact.png'],
             
-            // Get a reference to our new left sidebar panel sub-navigation
+            // Multi-Page Book Spread Tracks
+            'wobblybook': [
+                'wobblybook.png' // This is page 1 (e.g., your intro spread snippet). Add more strings here as you build them.
+            ],
+            'synopsis': [
+                'synopsis.png' // This is page 1 (e.g., your Albania Notebooks spread snippet)
+            ]
+        };
+
+        let currentTrack = 'index';
+        let currentPageIndex = 0;
+
+        // Handles jumping to a specific content track or book section
+        function jumpToTrack(trackName) {
+            if (!bookTracks[trackName]) return;
+            
+            currentTrack = trackName;
+            currentPageIndex = 0; // Reset reader to the first spread of the section
+            renderCurrentState();
+        }
+
+        // Moves backward or forward within the active reading track
+        function changePage(direction) {
+            const trackPages = bookTracks[currentTrack];
+            let newIndex = currentPageIndex + direction;
+            
+            // Check boundaries to see if a next or previous page exists
+            if (newIndex >= 0 && newIndex < trackPages.length) {
+                currentPageIndex = newIndex;
+                renderCurrentState();
+            }
+        }
+
+        // Synchronizes the CSS backgrounds and interface overlays based on active state
+        function renderCurrentState() {
+            const trackPages = bookTracks[currentTrack];
+            const activeImage = trackPages[currentPageIndex];
+            
+            // 1. Update the background image spread
+            document.getElementById('slideViewer').style.backgroundImage = "url('" + activeImage + "')";
+            
+            // 2. Control Left Sidebar Sub-Nav visibility (keep active on projects, wobblybook, and synopsis views)
             const projectsMenu = document.getElementById('projectsSubNav');
-            
-            // Logic to toggle the left menu links: only show them when a project-related slide is active
-            if (imageName === 'projects.png' || imageName === 'wobblybook.png' || imageName === 'synopsis.png') {
+            if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
                 projectsMenu.style.display = 'flex';
             } else {
                 projectsMenu.style.display = 'none';
+            }
+            
+            // 3. Toggle interactive book page-turn hitboxes if the active track contains multiple pages
+            const bookLayer = document.getElementById('bookControls');
+            if (trackPages.length > 1) {
+                bookLayer.style.display = 'block';
+            } else {
+                bookLayer.style.display = 'none';
             }
         }
     </script>
