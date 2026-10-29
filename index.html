@@ -1,323 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body, html {
-            width: 100%;
-            height: 100%;
-            background-color: #000000;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        .site-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            max-width: 1920px;
-            max-height: 1080px;
-            margin: 0 auto;
-            background-image: url('index.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background-image 0.2s ease-in-out;
-        }
-        
-        /* Top Navigation Header Overlay */
-        .nav-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8%;
-            display: flex;
-            z-index: 10;
-        }
-        .nav-logo {
-            width: 16%;
-            height: 100%;
-            cursor: pointer;
-        }
-        .nav-spacer {
-            width: 13%;
-            height: 100%;
-        }
-        .nav-links {
-            width: 71%;
-            height: 100%;
-            display: flex;
-        }
-        .nav-item {
-            flex: 1;
-            height: 100%;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0);
-        }
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        /* Dynamic Left Sidebar Overlay for PROJECTS Tab */
-        .sub-nav-overlay {
-            position: absolute;
-            top: 40%;
-            left: 0;
-            width: 16%;
-            height: 20%;
-            display: none;
-            flex-direction: column;
-            z-index: 10;
-        }
-        .sub-nav-item {
-            width: 100%;
-            height: 50%;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0);
-        }
-        .sub-nav-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* Razor-Sharp PDF Embed Viewport Container */
-      .pdf-viewer-layer {
-    position: absolute;
-    top: 14%;
-    left: 20%;
-    width: 65%;
-    height: 72vh;
-    display: none;
-    border: none;
-    z-index: 5;
-    background-color: #000000;
-    /* --- ISOLATED CANVAS SANDBOX STYLES --- */
-/* 1. Full Background Shield to cover projects.png text bleed */
-#canvas-backdrop-sandbox {
-    position: absolute;
-    top: 8%;
-    left: 22%;
-    width: 84%;
-    height: 92%;
-    background-color: #000000;
-    z-index: 4;
-    display: none;
-    border: none;
-}
-
-/* 2. Overwrite container overflow to lock out native scrollbars */
-#pdfViewer {
-    overflow: hidden;
-    position: absolute;
-    width: 65%;
-    height: 72vh;
-}
-
-/* 3. The continuous horizontal layout strip */
-#book-spread-track {
-    display: flex;
-    width: 200%; /* Spans 2 spreads total */
-    height: 100%;
-    transition: transform 0.4s ease-in-out; /* Smooth slide animation */
-}
-
-/* 4. Each single spread viewport box */
-.book-spread {
-    display: flex;
-    width: 50%;
-    height: 100%;
-}
-
-/* 5. Individual facing pages locked side-by-side */
-.book-page {
-    width: 50%;
-    height: 100%;
-    border: none;
-    background-color: #000000;
-    overflow: hidden;
-}
-
-/* Force modern browser PDF plugins to scale content to the element size */
-@media screen and (min-width: 1px) {
-    .book-page {
-        height: 100%;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #ffffff;
+      overflow: hidden;
     }
-}
-
-}
-
-/* Force modern browser PDF plugins to scale content to the element size */
-@media screen and (min-width: 1px) {
-    .book-page {
-        height: 100%;
+    .site-viewport-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+      position: relative;
     }
-}
-
-}
-
-/* Force modern browser PDF plugins to scale content to the element size */
-@media screen and (min-width: 1px) {
-    .book-page {
-        height: 100%;
+    .top-navigation-navbar {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 70px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      box-sizing: border-box;
+      padding: 0 40px;
+      z-index: 10;
     }
-}
-     
+    .osdg-identity-logo {
+      border: 1px solid #ffffff;
+      padding: 8px 24px;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      margin-right: 40px;
+      text-transform: uppercase;
+    }
+    .brand-accent-indicator {
+      width: 12px;
+      height: 12px;
+      background-color: #ff3b30;
+      margin-right: 60px;
+    }
+    .navbar-navigation-links {
+      display: flex;
+      gap: 50px;
+    }
+    .navbar-navigation-links a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .navbar-navigation-links a.active-route-item {
+      color: #ffffff;
+    }
+    .workspace-columns-split {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      height: calc(100vh - 120px);
+      box-sizing: border-box;
+      position: relative;
+    }
+    .left-sidebar-navigation-panel {
+      width: 280px;
+      height: 100%;
+      padding: 40px 40px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+    .sidebar-context-heading {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .sidebar-primary-title {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .sidebar-decorative-square {
+      width: 32px;
+      height: 32px;
+      background-color: #ff3b30;
+      margin: 15px 0 20px 0;
+    }
+    .sidebar-identity-subtitle {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 0 5px 0;
+      text-transform: uppercase;
+    }
+    .sidebar-tagline-text {
+      font-size: 10px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 0 0 50px 0;
+    }
+    .sidebar-wobbly-branding {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      margin-bottom: 30px;
+      color: #ffffff;
+    }
+    .sidebar-synopsis-link-item {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: #ffffff;
+      text-decoration: none;
+      border-bottom: 1px solid #ffffff;
+      padding-bottom: 4px;
+      align-self: flex-start;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .center-canvas-display-viewport {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      position: relative;
+    }
     
-    </style>
+    /* --- DYNAMIC GLOBAL LANDING BACKGROUND LAYER --- */
+    #slideViewer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+
+    /* --- ISOLATED RECTANGLE SANDBOX CANVAS SHIELDS --- */
+    #canvas-backdrop-sandbox {
+      position: absolute;
+      top: 8%;
+      left: 22%;
+      width: 84%;
+      height: 92%;
+      background-color: #000000;
+      z-index: 4;
+      display: none;
+      border: none;
+    }
+    .pdf-viewer-layer {
+      position: absolute;
+      top: 14%;
+      left: 20%;
+      width: 65%;
+      height: 72vh;
+      border: none;
+      z-index: 5;
+      background-color: #000000;
+      display: none;
+      overflow: hidden;
+    }
+    .pdf-document-scroll-track {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .pdf-render-frame-node {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+    .site-footer-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 40px;
+      box-sizing: border-box;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+    .site-footer-panel a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+    }
+  </style>
 </head>
-<body>
+<body class="site-viewport-wrapper">
 
-    <div class="site-container" id="slideViewer">
-        <!-- Main Top Navigation -->
-        <nav class="nav-overlay">
-            <div class="nav-logo" onclick="jumpToTrack('index')"></div>
-            <div class="nav-spacer"></div>
-            <div class="nav-links">
-                <div class="nav-item" onclick="jumpToTrack('projects')"></div>
-                <div class="nav-item" onclick="jumpToTrack('about')"></div>
-                <div class="nav-item" onclick="jumpToTrack('greg')"></div>
-                <div class="nav-item" onclick="jumpToTrack('careers')"></div>
-                <div class="nav-item" onclick="jumpToTrack('contact')"></div>
-            </div>
-        </nav>
+  <!-- Main Slide Backdrop Node Wrapper -->
+  <div id="slideViewer"></div>
 
-        <!-- Dynamic Projects Left Panel Sub-Navigation -->
-        <div class="sub-nav-overlay" id="projectsSubNav">
-            <div class="sub-nav-item" onclick="jumpToTrack('wobblybook')"></div>
-            <div class="sub-nav-item" onclick="jumpToTrack('synopsis')"></div>
+  <header class="top-navigation-navbar">
+    OSDG</div>
+    <div class="brand-accent-indicator"></div>
+    <nav class="navbar-navigation-links">
+      <a href="#projects" class="active-route-item" onclick="jumpToTrack('projects')">PROJECTS</a>
+      <a href="#about" onclick="jumpToTrack('about')">ABOUT</a>
+      <a href="#team" onclick="jumpToTrack('team')">TEAM</a>
+      <a href="#careers" onclick="jumpToTrack('careers')">CAREERS</a>
+      <a href="#contact" onclick="jumpToTrack('contact')">CONTACT</a>
+    </nav>
+  </header>
+
+  <main class="workspace-columns-split">
+    <aside class="left-sidebar-navigation-panel">
+      <div class="sidebar-context-heading">PROJECTS</div>
+      <h1 class="sidebar-primary-title">LEO</h1>
+      <div class="sidebar-decorative-square"></div>
+      THE PHILOSOPHER</div>
+      <div class="sidebar-tagline-text">This Great Feast of Life</div>
+      
+      <div class="sidebar-wobbly-branding">WOBBLY BOOK®</div>
+      <a class="sidebar-synopsis-link-item" id="synopsisLinkMenu" onclick="jumpToTrack('synopsis')">SERIES SYNOPSIS</a>
+    </aside>
+
+    <div class="center-canvas-display-viewport">
+      <!-- Black backdrop element to shield text bleed -->
+      <div id="canvas-backdrop-sandbox"></div>
+      
+      <!-- Custom Proportionate Reading Window Frame Layer -->
+      <div class="pdf-viewer-layer" id="pdfViewer">
+        <div class="pdf-document-scroll-track">
+          <iframe src="synopsis.pdf#toolbar=0&navpanes=0&view=FitH" class="pdf-render-frame-node" scrolling="no"></iframe>
         </div>
-        <!-- Isolated Canvas Sandbox Backdrop Mask -->
-        <div id="canvas-backdrop-sandbox"></div>
+      </div>
+    </div>
+  </main>
 
-        <!-- Your Downsized Reading Canvas Layout Container with a Single Clean Frame -->
-        <div id="pdfViewer" class="pdf-viewer-layer">
-            <iframe src="synopsis.pdf#toolbar=0&navpanes=0&view=FitH" id="book-single-viewport" style="width: 100%; height: 100%; border: none;" scrolling="auto"></iframe>
-        </div>
+  <footer class="site-footer-panel">
+    <div>© OSDG 2026</div>
+    <div><a href="#">Privacy Policy, Terms & Conditions</a></div>
+    <div>Site by OSDG</div>
+  </footer>
 
-    <script>
-        const bookTracks = {
-            'index': { type: 'image', source: 'index.png' },
-            'projects': { type: 'image', source: 'projects.png' },
-            'about': { type: 'image', source: 'about.png' },
-            'greg': { type: 'image', source: 'greg.png' },
-            'careers': { type: 'image', source: 'careers.png' },
-            'contact': { type: 'image', source: 'contact.png' },
-            'wobblybook': { type: 'image', source: 'wobblybook.png' },
-            
-            // Explicitly handles your landscape stitched PDF document track
-            'synopsis': { 
-                type: 'document', 
-                source: 'synopsis.pdf#toolbar=0&navpanes=0&view=FitH' 
-            }
-        };
+  <script>
+    // 1. Asset Mapping Configuration Registry
+    const tracks = {
+      'projects': { type: 'image', src: 'projects.png' },
+      'about':    { type: 'image', src: 'about.png' },
+      'team':     { type: 'image', src: 'team.png' },
+      'careers':  { type: 'image', src: 'careers.png' },
+      'contact':  { type: 'image', src: 'contact.png' },
+      'synopsis': { type: 'document', src: 'synopsis.pdf' }
+    };
 
-        let currentTrack = 'index';
-let currentSpreadIndex = 0;
-const totalSpreads = 2;
+    let currentTrackKey = 'projects';
 
-        function jumpToTrack(trackName) {
-            if (!bookTracks[trackName]) return;
-            currentTrack = trackName;
-            renderCurrentState();
-        }
+    // 2. State Controller Engine Tracker
+    function renderCurrentState() {
+      const activeTrack = tracks[currentTrackKey];
+      const slideViewer = document.getElementById('slideViewer');
+      const pdfWindow = document.getElementById('pdfViewer');
+      const sandboxMask = document.getElementById('canvas-backdrop-sandbox');
 
-        function renderCurrentState() {
-            const activeTrack = bookTracks[currentTrack];
-            const slideViewer = document.getElementById('slideViewer');
-            const pdfWindow = document.getElementById('pdfViewer');
-    const sandboxMask = document.getElementById('canvas-backdrop-sandbox');
-    const projectsMenu = document.getElementById('projectsSubNav');
-            
-            // 1. Handle Left Sub-Menu Visibility
-            if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
-                projectsMenu.style.display = 'flex';
-            } else {
-                projectsMenu.style.display = 'none';
-            }
-            
-            // 2. Route Content Types
-            if (activeTrack.type === 'document') {
-    slideViewer.style.backgroundImage = "url('projects.png')";
-    if (sandboxMask) sandboxMask.style.display = "block";
-    if (pdfWindow) pdfWindow.style.display = "block";
-    lockVerticalScroll();
-} else {
-    slideViewer.style.backgroundImage = `url('${activeTrack.source}')`;
-    if (sandboxMask) sandboxMask.style.display = "none";
-    if (pdfWindow) pdfWindow.style.display = "none";
-    resetBookTrack();
-    unlockVerticalScroll();
-}
-// --- BOOK NAV ENGINE & ARROW BOUNDARIES ---
-function navigateBook(direction) {
-    const track = document.getElementById('book-spread-track');
-    if (!track) return;
+      if (!slideViewer) return;
 
-    if (direction === 'next' && currentSpreadIndex < totalSpreads - 1) {
-        currentSpreadIndex++;
-    } else if (direction === 'prev' && currentSpreadIndex > 0) {
-        currentSpreadIndex--;
+      if (activeTrack.type === 'document') {
+        slideViewer.style.backgroundImage = "url('projects.png')";
+        if (sandboxMask) sandboxMask.style.display = "block";
+        if (pdfWindow) pdfWindow.style.display = "block";
+      } else if (activeTrack.type === 'image') {
+        slideViewer.style.backgroundImage = `url('${activeTrack.src}')`;
+        if (sandboxMask) sandboxMask.style.display = "none";
+        if (pdfWindow) pdfWindow.style.display = "none";
+      }
     }
 
-    const translateAmount = currentSpreadIndex * -50;
-    track.style.transform = `translateX(${translateAmount}%)`;
-}
-
-const leftBtn = document.getElementById('goSpreadLeft');
-const rightBtn = document.getElementById('goSpreadRight');
-
-function updateButtonStates() {
-    if (!leftBtn || !rightBtn) return;
-    leftBtn.disabled = (currentSpreadIndex === 0);
-    rightBtn.disabled = (currentSpreadIndex === totalSpreads - 1);
-    leftBtn.style.opacity = leftBtn.disabled ? "0.3" : "1.0";
-    rightBtn.style.opacity = rightBtn.disabled ? "0.3" : "1.0";
-}
-
-if (leftBtn) leftBtn.addEventListener('click', () => { navigateBook('prev'); updateButtonStates(); });
-if (rightBtn) rightBtn.addEventListener('click', () => { navigateBook('next'); updateButtonStates(); });
-updateButtonStates(); // Initialize boundaries on load
-
-// --- REVERSE TRACK BACK TO PAGE 1 ON CLOSE ---
-function resetBookTrack() {
-    currentSpreadIndex = 0;
-    const track = document.getElementById('book-spread-track');
-    if (track) track.style.transform = "translateX(0%)";
-    updateButtonStates();
-}
-
-// --- VERTICAL WINDOW LEVEL SCROLL LOCKOUT ---
-function preventDefaultScroll(e) { e.preventDefault(); }
-const keysToBlock = { 32: 1, 33: 1, 34: 1, 35: 1, 36: 1, 38: 1, 40: 1 };
-function preventKeyScroll(e) { if (keysToBlock[e.keyCode]) { e.preventDefault(); return false; } }
-
-function lockVerticalScroll() {
-    window.addEventListener('wheel', preventDefaultScroll, { passive: false });
-    window.addEventListener('touchmove', preventDefaultScroll, { passive: false });
-    window.addEventListener('keydown', preventKeyScroll, { passive: false });
-}
-function unlockVerticalScroll() {
-    window.removeEventListener('wheel', preventDefaultScroll, { passive: false });
-    window.removeEventListener('touchmove', preventDefaultScroll, { passive: false });
-    window.removeEventListener('keydown', preventKeyScroll, { passive: false });
-}
-
-// --- KEYBOARD HORIZONTAL ARROW LISTENER ---
-window.addEventListener('keydown', function(e) {
-    const pdfWindow = document.getElementById('pdfViewer');
-    if (pdfWindow && pdfWindow.style.display === "block") {
-        if (e.keyCode === 37) { navigateBook('prev'); updateButtonStates(); }
-        if (e.keyCode === 39) { navigateBook('next'); updateButtonStates(); }
+    // 3. Action Router Navigation Function Hook
+    function jumpToTrack(trackKey) {
+      if (tracks[trackKey]) {
+        currentTrackKey = trackKey;
+        renderCurrentState();
+        
+        // Update top horizontal link active highlighting
+        const links = document.querySelectorAll('.navbar-navigation-links a');
+        links.forEach(link => {
+          const checkText = link.getAttribute('onclick').replace("jumpToTrack('", "").replace("')", "");
+          if (checkText === trackKey) {
+            link.classList.add('active-route-item');
+          } else {
+            link.classList.remove('active-route-item');
+          }
+        });
+      }
     }
-});
 
-        }
-    </script>
+    // Initialize state controller on startup
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCurrentState();
+    });
+  </script>
 </body>
 </html>
