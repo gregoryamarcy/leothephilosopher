@@ -97,8 +97,54 @@
     border: none;
     z-index: 5;
     background-color: #000000;
-    
+    /* --- ISOLATED CANVAS SANDBOX STYLES --- */
+/* 1. Full Background Shield to cover projects.png text bleed */
+#canvas-backdrop-sandbox {
+    position: absolute;
+    top: 8%;
+    left: 22%;
+    width: 84%;
+    height: 92%;
+    background-color: #000000;
+    z-index: 4;
+    display: none;
+    border: none;
+}
+
+/* 2. Overwrite container overflow to lock out native scrollbars */
+#pdfViewer {
+    overflow: hidden;
+    position: absolute;
+    width: 65%;
+    height: 72vh;
+}
+
+/* 3. The continuous horizontal layout strip */
+#book-spread-track {
+    display: flex;
+    width: 200%; /* Spans 2 spreads total */
+    height: 100%;
+    transition: transform 0.4s ease-in-out; /* Smooth slide animation */
+}
+
+/* 4. Each single spread viewport box */
+.book-spread {
+    display: flex;
+    width: 50%;
+    height: 100%;
+}
+
+/* 5. Individual facing pages locked side-by-side */
+.book-page {
+    width: 50%;
+    height: 100%;
+    object-fit: contain;
+    background-color: #000000;
+    border: none;
+}
+
     }      
+    
     </style>
 </head>
 <body>
@@ -124,7 +170,26 @@
         </div>
 
         <!-- Interactive PDF Embed Viewport (Appears for Synopsis Track) -->
-        <iframe class="pdf-viewer-layer" id="pdfViewer" src="about:blank"></iframe>
+        <!-- Isolated Canvas Sandbox Backdrop Mask -->
+<div id="canvas-backdrop-sandbox"></div>
+
+<!-- Your Downsized Reading Canvas Layout Container -->
+<div id="pdfViewer" class="pdf-viewer-layer">
+    <div id="book-spread-track">
+        <!-- Spread 1: Pages 1 & 2 Facing -->
+        <div class="book-spread">
+            <iframe src="synopsis.pdf#page=1&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
+            <iframe src="synopsis.pdf#page=2&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
+        </div>
+        
+        <!-- Spread 2: Pages 3 & 4 Facing -->
+        <div class="book-spread">
+            <iframe src="synopsis.pdf#page=3&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
+            <iframe src="synopsis.pdf#page=4&toolbar=0&navpanes=0&view=Fit" class="book-page"></iframe>
+        </div>
+    </div>
+</div>
+
     </div>
 
     <script>
@@ -145,6 +210,8 @@
         };
 
         let currentTrack = 'index';
+let currentSpreadIndex = 0;
+const totalSpreads = 2;
 
         function jumpToTrack(trackName) {
             if (!bookTracks[trackName]) return;
@@ -167,18 +234,80 @@
             
             // 2. Route Content Types
             if (activeTrack.type === 'document') {
-                // Pin background to projects layout frame so the menus stay visible
-                slideViewer.style.backgroundImage = "url('projects.png')"; 
-                
-                // Active the PDF canvas viewport smoothly
-                pdfWindow.src = activeTrack.source;
-                pdfWindow.style.display = 'block';
-            } else {
-                // Clear the document container and swap background image
-                pdfWindow.style.display = 'none';
-                pdfWindow.src = 'about:blank';
-                slideViewer.style.backgroundImage = "url('" + activeTrack.source + "')";
-            }
+    slideViewer.style.backgroundImage = "url('projects.png')";
+    if (sandboxMask) sandboxMask.style.display = "block";
+    if (pdfWindow) pdfWindow.style.display = "block";
+    lockVerticalScroll();
+} else {
+    slideViewer.style.backgroundImage = `url('${activeTrack.source}')`;
+    if (sandboxMask) sandboxMask.style.display = "none";
+    if (pdfWindow) pdfWindow.style.display = "none";
+    resetBookTrack();
+    unlockVerticalScroll();
+}
+// --- BOOK NAV ENGINE & ARROW BOUNDARIES ---
+function navigateBook(direction) {
+    const track = document.getElementById('book-spread-track');
+    if (!track) return;
+
+    if (direction === 'next' && currentSpreadIndex < totalSpreads - 1) {
+        currentSpreadIndex++;
+    } else if (direction === 'prev' && currentSpreadIndex > 0) {
+        currentSpreadIndex--;
+    }
+
+    const translateAmount = currentSpreadIndex * -50;
+    track.style.transform = `translateX(${translateAmount}%)`;
+}
+
+const leftBtn = document.getElementById('goSpreadLeft');
+const rightBtn = document.getElementById('goSpreadRight');
+
+function updateButtonStates() {
+    if (!leftBtn || !rightBtn) return;
+    leftBtn.disabled = (currentSpreadIndex === 0);
+    rightBtn.disabled = (currentSpreadIndex === totalSpreads - 1);
+    leftBtn.style.opacity = leftBtn.disabled ? "0.3" : "1.0";
+    rightBtn.style.opacity = rightBtn.disabled ? "0.3" : "1.0";
+}
+
+if (leftBtn) leftBtn.addEventListener('click', () => { navigateBook('prev'); updateButtonStates(); });
+if (rightBtn) rightBtn.addEventListener('click', () => { navigateBook('next'); updateButtonStates(); });
+updateButtonStates(); // Initialize boundaries on load
+
+// --- REVERSE TRACK BACK TO PAGE 1 ON CLOSE ---
+function resetBookTrack() {
+    currentSpreadIndex = 0;
+    const track = document.getElementById('book-spread-track');
+    if (track) track.style.transform = "translateX(0%)";
+    updateButtonStates();
+}
+
+// --- VERTICAL WINDOW LEVEL SCROLL LOCKOUT ---
+function preventDefaultScroll(e) { e.preventDefault(); }
+const keysToBlock = { 32: 1, 33: 1, 34: 1, 35: 1, 36: 1, 38: 1, 40: 1 };
+function preventKeyScroll(e) { if (keysToBlock[e.keyCode]) { e.preventDefault(); return false; } }
+
+function lockVerticalScroll() {
+    window.addEventListener('wheel', preventDefaultScroll, { passive: false });
+    window.addEventListener('touchmove', preventDefaultScroll, { passive: false });
+    window.addEventListener('keydown', preventKeyScroll, { passive: false });
+}
+function unlockVerticalScroll() {
+    window.removeEventListener('wheel', preventDefaultScroll, { passive: false });
+    window.removeEventListener('touchmove', preventDefaultScroll, { passive: false });
+    window.removeEventListener('keydown', preventKeyScroll, { passive: false });
+}
+
+// --- KEYBOARD HORIZONTAL ARROW LISTENER ---
+window.addEventListener('keydown', function(e) {
+    const pdfWindow = document.getElementById('pdfViewer');
+    if (pdfWindow && pdfWindow.style.display === "block") {
+        if (e.keyCode === 37) { navigateBook('prev'); updateButtonStates(); }
+        if (e.keyCode === 39) { navigateBook('next'); updateButtonStates(); }
+    }
+});
+
         }
     </script>
 </body>
