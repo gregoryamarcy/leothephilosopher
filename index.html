@@ -22,6 +22,7 @@
       height: 100vh;
       box-sizing: border-box;
       position: relative;
+      background-color: #000000;
     }
     .top-navigation-navbar {
       display: flex;
@@ -32,6 +33,7 @@
       box-sizing: border-box;
       padding: 0 40px;
       z-index: 10;
+      position: relative;
     }
     .osdg-identity-logo {
       border: 1px solid #ffffff;
@@ -67,7 +69,7 @@
       display: flex;
       flex: 1;
       width: 100%;
-      height: calc(100vh - 120px);
+      height: calc(100vh - 70px);
       box-sizing: border-box;
       position: relative;
     }
@@ -79,6 +81,7 @@
       flex-direction: column;
       box-sizing: border-box;
       z-index: 10;
+      position: relative;
     }
     .sidebar-context-heading {
       font-size: 11px;
@@ -159,9 +162,9 @@
     #canvas-backdrop-sandbox {
       position: absolute;
       top: 0;
-      left: 280px; /* Aligns precisely at the edge of your sidebar panel */
-      width: calc(100% - 280px);
-      height: calc(100vh - 120px);
+      left: 0;
+      width: 100%;
+      height: 100%;
       background-color: #000000;
       z-index: 3;
       display: none;
@@ -172,9 +175,9 @@
     .pdf-viewer-layer {
       position: absolute;
       top: 10%;
-      left: 22%;
-      width: 74%;
-      height: 68vh; /* Tightened height to ensure landscape pages never cut off at bottom */
+      left: 20%;
+      width: 76%;
+      height: 75vh;
       border: none;
       z-index: 5;
       background-color: #000000;
@@ -192,6 +195,7 @@
       height: 100%;
       display: block;
       border: none;
+      overflow: hidden;
     }
     .site-footer-panel {
       display: flex;
@@ -206,6 +210,8 @@
       letter-spacing: 0.1em;
       color: rgba(255, 255, 255, 0.4);
       z-index: 10;
+      position: relative;
+      background-color: #000000;
     }
     .site-footer-panel a {
       color: rgba(255, 255, 255, 0.4);
@@ -221,12 +227,12 @@
   <header class="top-navigation-navbar">
     OSDG</div>
     <div class="brand-accent-indicator"></div>
-    <nav class="navbar-navigation-links">
-      <a href="#projects" class="active-route-item" onclick="jumpToTrack('projects')">PROJECTS</a>
-      <a href="#about" onclick="jumpToTrack('about')">ABOUT</a>
-      <a href="#team" onclick="jumpToTrack('team')">TEAM</a>
-      <a href="#careers" onclick="jumpToTrack('careers')">CAREERS</a>
-      <a href="#contact" onclick="jumpToTrack('contact')">CONTACT</a>
+    <nav class="navbar-navigation-links" id="topNavLinks">
+      <a data-target="projects" class="active-route-item" onclick="jumpToTrack('projects')">PROJECTS</a>
+      <a data-target="about" onclick="jumpToTrack('about')">ABOUT</a>
+      <a data-target="team" onclick="jumpToTrack('team')">TEAM</a>
+      <a data-target="careers" onclick="jumpToTrack('careers')">CAREERS</a>
+      <a data-target="contact" onclick="jumpToTrack('contact')">CONTACT</a>
     </nav>
   </header>
 
@@ -301,10 +307,10 @@
         renderCurrentState();
         
         // Handle horizontal top menu active highlighter updates dynamically
-        const links = document.querySelectorAll('.navbar-navigation-links a');
+        const links = document.querySelectorAll('#topNavLinks a');
         links.forEach(link => {
-          const clickActionAttr = link.getAttribute('onclick');
-          if (clickActionAttr && clickActionAttr.includes(`'${trackKey}'`)) {
+          const targetData = link.getAttribute('data-target');
+          if (targetData === trackKey) {
             link.classList.add('active-route-item');
           } else {
             link.classList.remove('active-route-item');
