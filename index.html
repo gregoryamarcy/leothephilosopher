@@ -1,6 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEO THE PHILOSOPHER | This Great Feast of Life</title>
   <style>
     /* ==========================================================================
-       GLOBAL SITE FRAMEWORK & RESPONSIVE TRACKING LAYOUT
+       RESTORED GLOBAL SITE FRAMEWORK & RESPONSIVE TRACKING LAYOUT
        ========================================================================== */
     html, body {
       margin: 0;
@@ -24,7 +30,19 @@
     }
 
     /* ==========================================================================
-       SERIES SYNOPSIS COMPONENT CONTAINER LAYOUT
+       RESTORED NAVIGATION LAYOUTS & IMAGE TRACK OVERLAYS
+       ========================================================================== */
+    .nav-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+    }
+
+    /* ==========================================================================
+       SERIES SYNOPSIS COMPONENT CONTAINER LAYOUT (UPDATED)
        ========================================================================== */
     .pdf-viewer-layer {
       display: none; /* Controlled dynamically by your navigation engine */
@@ -64,3 +82,81 @@
       z-index: 999999 !important;
     }
   </style>
+</head>
+<body>
+
+  <div class="site-container" id="slideViewer">
+    <!-- Main Top Navigation Hotspots mapped over tracking slides -->
+    <div class="nav-overlay" id="mainNavOverlay">
+      <!-- Mapped pixel coordinates are processed directly by your script below -->
+      <div style="position: absolute; left: 32%; top: 0%; width: 11%; height: 8%; cursor: pointer;" onclick="jumpToTrack('projects')"></div>
+      <div style="position: absolute; left: 45%; top: 0%; width: 9%; height: 8%; cursor: pointer;" onclick="jumpToTrack('about')"></div>
+      <div style="position: absolute; left: 56%; top: 0%; width: 8%; height: 8%; cursor: pointer;" onclick="jumpToTrack('greg')"></div>
+      <div style="position: absolute; left: 66%; top: 0%; width: 11%; height: 8%; cursor: pointer;" onclick="jumpToTrack('careers')"></div>
+      <div style="position: absolute; left: 80%; top: 0%; width: 11%; height: 8%; cursor: pointer;" onclick="jumpToTrack('contact')"></div>
+      <div style="position: absolute; left: 2%; top: 0%; width: 15%; height: 8%; cursor: pointer;" onclick="jumpToTrack('index')"></div>
+    </div>
+
+    <!-- Dynamic Left Panel Project Hotspots -->
+    <div class="nav-overlay" id="projectsNavOverlay" style="display: none;">
+      <div style="position: absolute; left: 2%; top: 28%; width: 15%; height: 5%; cursor: pointer;" onclick="jumpToTrack('wobblybook')"></div>
+      <div style="position: absolute; left: 2%; top: 35%; width: 15%; height: 5%; cursor: pointer;" onclick="jumpToTrack('synopsis')"></div>
+    </div>
+
+    <!-- Interactive PDF Embed Viewport (Appears for Synopsis Track) -->
+    <iframe class="pdf-viewer-layer" id="pdfViewer" src="about:blank"></iframe>
+  </div>
+
+  <script>
+    const bookTracks = {
+      'index': { type: 'image', source: 'index.png' },
+      'projects': { type: 'image', source: 'projects.png' },
+      'about': { type: 'image', source: 'about.png' },
+      'greg': { type: 'image', source: 'greg.png' },
+      'careers': { type: 'image', source: 'careers.png' },
+      'contact': { type: 'image', source: 'contact.png' },
+      'wobblybook': { type: 'image', source: 'wobblybook.png' },
+      'synopsis': {
+        type: 'document',
+        source: 'synopsis.pdf#toolbar=0&navpanes=0&view=Fit'
+      }
+    };
+
+    let currentTrack = 'index';
+
+    function jumpToTrack(trackName) {
+      if (!bookTracks[trackName]) return;
+      currentTrack = trackName;
+      renderCurrentState();
+    }
+
+    function renderCurrentState() {
+      const activeTrack = bookTracks[currentTrack];
+      const slideViewer = document.getElementById('slideViewer');
+      const pdfWindow = document.getElementById('pdfViewer');
+      const projectsOverlay = document.getElementById('projectsNavOverlay');
+
+      // Handle Left Sub-Menu Hotspots Visibility
+      if (currentTrack === 'projects' || currentTrack === 'wobblybook' || currentTrack === 'synopsis') {
+        projectsOverlay.style.display = 'block';
+      } else {
+        projectsOverlay.style.display = 'none';
+      }
+
+      // Route Content Rendering
+      if (activeTrack.type === 'document') {
+        slideViewer.style.backgroundImage = "url('projects.png')";
+        pdfWindow.src = activeTrack.source;
+        pdfWindow.style.display = 'block';
+      } else {
+        pdfWindow.style.display = 'none';
+        pdfWindow.src = 'about:blank';
+        slideViewer.style.backgroundImage = "url('" + activeTrack.source + "')";
+      }
+    }
+
+    // Initialize the landing page view state on launch
+    renderCurrentState();
+  </script>
+</body>
+</html>
