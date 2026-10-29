@@ -24,7 +24,7 @@
             max-width: 1920px;
             max-height: 1080px;
             margin: 0 auto;
-            background-image: url('index.png.png');
+            background-image: url('index.png');
             background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
@@ -67,14 +67,14 @@
 
     <div class="site-container" id="slideViewer">
         <nav class="nav-overlay">
-            <div class="nav-logo" onclick="changeSlide('index.png.png')"></div>
+            <div class="nav-logo" onclick="changeSlide('index.png')"></div>
             <div class="nav-spacer"></div>
             <div class="nav-links">
-                <div class="nav-item" onclick="changeSlide('projects.png.png')"></div>
-                <div class="nav-item" onclick="changeSlide('about.png.png')"></div>
-                <div class="nav-item" onclick="changeSlide('greg.png.png')"></div>
-                <div class="nav-item" onclick="changeSlide('careers.png.png')"></div>
-                <div class="nav-item" onclick="changeSlide('contact.png.png')"></div>
+                <div class="nav-item" onclick="changeSlide('projects.png')"></div>
+                <div class="nav-item" onclick="changeSlide('about.png')"></div>
+                <div class="nav-item" onclick="changeSlide('greg.png')"></div>
+                <div class="nav-item" onclick="changeSlide('careers.png')"></div>
+                <div class="nav-item" onclick="changeSlide('contact.png')"></div>
             </div>
         </nav>
     </div>
@@ -82,3 +82,7 @@
     <script>
         function changeSlide(imageName) {
             document.getElementById('slideViewer').style.backgroundImage = "url('" + imageName + "')";
+        }
+    </script>
+</body>
+</html>
