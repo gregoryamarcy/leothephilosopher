@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEO THE PHILOSOPHER | Series Synopsis</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      background-color: #000000; overflow: hidden;
+    }
+    #bg-layer {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url('projects.png');
+      background-size: 100% 100%; background-repeat: no-repeat; z-index: 1;
+    }
+    #black-mask {
+      position: absolute; top: 70px; left: 280px;
+      width: calc(100% - 280px); height: calc(100vh - 70px);
+      background-color: #000000; z-index: 3;
+    }
+    .nav-links {
+      position: absolute; top: 22px; left: 345px; display: flex; gap: 50px; z-index: 10;
+    }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.6); text-decoration: none;
+      font-family: -apple-system, sans-serif; font-size: 12px; letter-spacing: 0.25em;
+    }
+    .pdf-container {
+      position: absolute; top: 14%; left: 21%; width: 78%; height: 72vh;
+      z-index: 5; background-color: #000000; overflow: hidden;
+    }
+    iframe { width: 100%; height: 100%; border: none; }
+  </style>
+</head>
+<body>
+  <div id="bg-layer"></div>
+  <div id="black-mask"></div>
+  <nav class="nav-links">
+    <a href="index.html">PROJECTS</a>
+    <a href="about.html">ABOUT</a>
+    <a href="team.html">TEAM</a>
+    <a href="careers.html">CAREERS</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+  <div class="pdf-container">
+    <iframe src="synopsis.pdf#toolbar=0&navpanes=0&view=FitH" scrolling="no"></iframe>
+  </div>
+</body>
+</html>
