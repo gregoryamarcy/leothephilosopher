@@ -142,36 +142,39 @@
       position: relative;
     }
     
-    /* --- DYNAMIC GLOBAL LANDING BACKGROUND LAYER --- */
+    /* --- STRUCTURAL PORTFOLIO BACKGROUND IMAGE CONTAINER --- */
     #slideViewer {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-size: cover;
-      background-position: center;
+      background-size: 100% 100%;
+      background-position: top left;
+      background-repeat: no-repeat;
       z-index: 1;
     }
 
-    /* --- ISOLATED RECTANGLE SANDBOX CANVAS SHIELDS --- */
+    /* --- SOLID SHIELD MASK (Blocks background text bleed cleanly) --- */
     #canvas-backdrop-sandbox {
       position: absolute;
-      top: 8%;
-      left: 22%;
-      width: 84%;
-      height: 92%;
+      top: 0;
+      left: 280px; /* Aligns precisely at the edge of your sidebar panel */
+      width: calc(100% - 280px);
+      height: calc(100vh - 120px);
       background-color: #000000;
-      z-index: 4;
+      z-index: 3;
       display: none;
       border: none;
     }
+    
+    /* --- PROPORTIONATE READING WINDOW FRAME CONTAINER --- */
     .pdf-viewer-layer {
       position: absolute;
-      top: 14%;
-      left: 21%;
-      width: 78%;
-      height: 72vh;
+      top: 10%;
+      left: 22%;
+      width: 74%;
+      height: 68vh; /* Tightened height to ensure landscape pages never cut off at bottom */
       border: none;
       z-index: 5;
       background-color: #000000;
@@ -212,7 +215,7 @@
 </head>
 <body class="site-viewport-wrapper">
 
-  <!-- Main Slide Backdrop Node Wrapper -->
+  <!-- Dynamic Runtime Slide Background Layer Node -->
   <div id="slideViewer"></div>
 
   <header class="top-navigation-navbar">
@@ -240,10 +243,10 @@
     </aside>
 
     <div class="center-canvas-display-viewport">
-      <!-- Black backdrop element to shield text bleed -->
+      <!-- Black backdrop mask layer -->
       <div id="canvas-backdrop-sandbox"></div>
       
-      <!-- Custom Proportionate Reading Window Frame Layer -->
+      <!-- Reading canvas layout container viewport -->
       <div class="pdf-viewer-layer" id="pdfViewer">
         <div class="pdf-document-scroll-track">
           <iframe src="synopsis.pdf#toolbar=0&navpanes=0&view=FitH" class="pdf-render-frame-node" scrolling="no"></iframe>
@@ -259,7 +262,7 @@
   </footer>
 
   <script>
-    // 1. Asset Mapping Configuration Registry
+    // Asset Track Configuration Dictionary Registry
     const tracks = {
       'projects': { type: 'image', src: 'projects.png' },
       'about':    { type: 'image', src: 'about.png' },
@@ -271,7 +274,7 @@
 
     let currentTrackKey = 'projects';
 
-    // 2. State Controller Engine Tracker
+    // State Controller Render Engine
     function renderCurrentState() {
       const activeTrack = tracks[currentTrackKey];
       const slideViewer = document.getElementById('slideViewer');
@@ -291,17 +294,17 @@
       }
     }
 
-    // 3. Action Router Navigation Function Hook
+    // Interactive Router Click Target Trigger
     function jumpToTrack(trackKey) {
       if (tracks[trackKey]) {
         currentTrackKey = trackKey;
         renderCurrentState();
         
-        // Update top horizontal link active highlighting
+        // Handle horizontal top menu active highlighter updates dynamically
         const links = document.querySelectorAll('.navbar-navigation-links a');
         links.forEach(link => {
-          const checkText = link.getAttribute('onclick').replace("jumpToTrack('", "").replace("')", "");
-          if (checkText === trackKey) {
+          const clickActionAttr = link.getAttribute('onclick');
+          if (clickActionAttr && clickActionAttr.includes(`'${trackKey}'`)) {
             link.classList.add('active-route-item');
           } else {
             link.classList.remove('active-route-item');
@@ -310,7 +313,7 @@
       }
     }
 
-    // Initialize state controller on startup
+    // Initialize display framework state upon page mount completion
     document.addEventListener('DOMContentLoaded', () => {
       renderCurrentState();
     });
